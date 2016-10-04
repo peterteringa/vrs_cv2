@@ -78,26 +78,35 @@ int main(void)
   GPIOC->MODER &= ~(uint32_t)(0b11<<26);
   GPIOC->OTYPER &= ~(uint32_t)(0b1<<13);
   GPIOC->PUPDR &= ~(uint32_t)(0b11<<26);
+  GPIOC->OSPEEDR &= ~(uint32_t)(0b11<<26);
 
-  uint8_t button = (GPIOC->IDR >> 13)&((uint8_t)(0b1));
 
+  uint8_t push_new = 0, push_old = 0;
+  uint8_t pocet;
 
+  int i = 0;
 
   /* Infinite loop */
   while (1)
   {
-	  button = (GPIOC->IDR >> 13)&((uint8_t)(0b1));
 
-	  /*for (int i=0; i<100000; i++) {
+	  push_new = ~(GPIOC->IDR >> 13)&((uint8_t)(0b1));					//citanie z IDR, ulozenie do premennej
+
+	  if ((push_new & ~push_old) == 1) {
+
+
+		  for (i=0; i<11; i++) {
+
+			  if (~(GPIOC->IDR >> 13)&((uint8_t)(0b1))) pocet++;		//pocitanie zakmitov
+		  }
+
+		  if (pocet > 2) {
+
+			  GPIOA->ODR ^= (uint32_t)(0b1 << 5); 						//toggle LED
+		  }
 	  }
-	  GPIOA->ODR ^= (uint32_t)(0b1 << 5);*/
+	  push_old = push_new;
 
-		if (button == 0) {
-			GPIOA->ODR |= (uint32_t)(0b1<<5); //zapni led
-		}
-		else {
-			GPIOA->ODR &= ~(uint32_t)(0b1<<5); //vypni led
-		}
   }
   return 0;
 }

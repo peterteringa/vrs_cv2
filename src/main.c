@@ -79,25 +79,25 @@ int main(void)
   GPIOC->OTYPER &= ~(uint32_t)(0b1<<13);
   GPIOC->PUPDR &= ~(uint32_t)(0b11<<26);
 
-  //uint8_t button = (GPIOC->IDR >> 13)&((uint8_t)(0b1));
+  uint8_t button = (GPIOC->IDR >> 13)&((uint8_t)(0b1));
 
 
 
   /* Infinite loop */
   while (1)
   {
-	  //button = (GPIOC->IDR >> 13)&((uint8_t)(0b1));
+	  button = (GPIOC->IDR >> 13)&((uint8_t)(0b1));
 
-	  for (int i=0; i<100000; i++) {
+	  /*for (int i=0; i<100000; i++) {
 	  }
-	  GPIOA->ODR ^= (uint32_t)(0b1 << 5);
+	  GPIOA->ODR ^= (uint32_t)(0b1 << 5);*/
 
-		/*if (button == 0) {
+		if (button == 0) {
 			GPIOA->ODR |= (uint32_t)(0b1<<5); //zapni led
 		}
 		else {
 			GPIOA->ODR &= ~(uint32_t)(0b1<<5); //vypni led
-		}*/
+		}
   }
   return 0;
 }
